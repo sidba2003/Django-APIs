@@ -11,7 +11,15 @@ $ conda create --name cwindividual python=3.10
 $ conda activate cwindividual
 ```
 
-## Install Python dependencies
+## Django backend
+
+The `backend` folder contains a [Django project](https://docs.djangoproject.com/en/stable/intro/tutorial01/) and was created with:
+
+```console
+(cwindividual)$ django-admin startproject backend
+```
+
+### Install backend (Python) dependencies
 
 With the conda environment active, install the backend (Python) dependencies:
 
@@ -20,13 +28,9 @@ With the conda environment active, install the backend (Python) dependencies:
 (cwindividual)$ pip install -r requirements.txt
 ```
 
-## Django backend
+The main backend dependencies (see requirements.txt) are the Django framework itself (Django) and [django-cors-headers](https://pypi.org/project/django-cors-headers/) which is needed for CORS requests (since the request origin address http://localhost:5713 is different from the address that sent the JavaScript code to the browser http://localhost:8000).
 
-The `backend` folder contains a [Django project](https://docs.djangoproject.com/en/stable/intro/tutorial01/) and was created with:
-
-```console
-(cwindividual)$ django-admin startproject backend
-```
+### Start backend server
 
 To start the backend server cd into the backend folder where the manage.py file is (if not already there)
 
@@ -58,6 +62,8 @@ The `frontend` folder contains a [Vue/Vite project](https://vitejs.dev/guide/) a
 (cwindividual)$ npm create vite@latest
 ```
 
+### Install frontend (JavaScript) dependencies
+
 To install the frontend (JavaScript) dependencies cd into the frontend folder
 
 ```console
@@ -69,6 +75,10 @@ and run:
 ```console
 (cwindividual)$ npm install
 ```
+
+The main frontend dependencies (see package.json) are [vue](https://vuejs.org/guide/introduction.html) and [bootstrap](https://getbootstrap.com/docs/5.0/getting-started/download/).
+
+### Start frontend server
 
 To start the frontend server run
 
