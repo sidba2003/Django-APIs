@@ -7,7 +7,7 @@ This template should be used as the starting point for your individual coursewor
 After cloning this repository, create a conda environment for this project and activate the environment:
 
 ```console
-$ conda create --name cwindividual python=3.10
+$ conda create --name cwindividual python=3.11
 $ conda activate cwindividual
 ```
 
