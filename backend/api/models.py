@@ -14,6 +14,7 @@ class Author(models.Model):
         return {
             'name': self.name,
             'age': self.age,
+            'id': self.id,
             'active': self.active,
             'api': reverse('author api', args=[self.id])
         }

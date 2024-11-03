@@ -85,6 +85,8 @@ def books_api(request):
             authors = Author.objects.filter(id__in=authors_ids)
             book.author.set(authors)
 
+            print(f'set the value of {book.as_dict()}')
+
             return JsonResponse(book.as_dict())
         case 'GET':
             books = [book.as_dict() for book in Book.objects.all()]

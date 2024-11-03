@@ -110,6 +110,13 @@
                 })
                 const newAuthor = await response.json()
                 this.authors.push(newAuthor)
+
+                // reset newAuthor
+                this.newAuthor = {
+                    name: '',
+                    age: 0,
+                    active: ''
+                }
             }
         }
     }

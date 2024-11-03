@@ -66,7 +66,7 @@
                     <div class="mb-3">
                         <label for="editAuthors" class="form-label">Authors</label>
                         <select v-model="bookEditData.authors" multiple class="form-control" id="editAuthors">
-                            <option v-for="author in authors" :value="author.id">{{ author.name }}</option>
+                            <option v-for="author in authors" :value="author.id" :key="author.id">{{ author.name }}</option>
                         </select>
                     </div>
                     <div class="mb-3">

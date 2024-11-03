@@ -8,6 +8,7 @@
         <div class="modal fade" id="addBook" tabindex="-1" aria-labelledby="addBookLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <!-- Modal content -->
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="addBookLabel">Add Book</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -22,11 +23,14 @@
                             <label for="description" class="form-label">Description</label>
                             <textarea v-model="newBook.description" class="form-control" id="description"></textarea>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" v-if="authors.length > 0">
                             <label for="authors" class="form-label">Authors</label>
                             <select v-model="newBook.authors" multiple class="form-control" id="authors">
-                                <option v-for="author in authors" :value="author.id">{{ author.name }}</option>
+                                <option v-for="author in authors" :value="author.id" :key="author.id">{{ author.name }}</option>
                             </select>
+                        </div>
+                        <div v-else>
+                            Loading authors...
                         </div>
                         <div class="mb-3">
                             <label for="published" class="form-label">Published Date</label>
@@ -34,6 +38,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <!-- Modal footer -->
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Close
                         </button>
@@ -45,7 +50,7 @@
             </div>
         </div>
 
-
+        <!-- Book Table Component -->
         <BookTable 
             :books="books"
             @delete-book="deleteBook"
@@ -85,15 +90,8 @@ export default {
         const data = await response.json()
         this.books = data.books;
 
-        // Fetch authors for selection in new book form
-        const authorsResponse = await fetch(`${baseUrl}/api/authors/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const authorsData = await authorsResponse.json()
-        this.authors = authorsData.authors;
+        const modal = document.getElementById('addBook');
+        modal.addEventListener('shown.bs.modal', this.updateAuthors);
     },
     methods: {
         async deleteBook(book) {
@@ -139,6 +137,25 @@ export default {
             this.newBook.description = ''
             this.newBook.authors = []
             this.newBook.published = ''
+        },
+        async updateAuthors(){
+            try {
+                // Fetch authors for selection in new book form
+                const authorsResponse = await fetch(`${baseUrl}/api/authors/`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                if (!authorsResponse.ok) {
+                    throw new Error('Failed to fetch authors');
+                }
+                const authorsData = await authorsResponse.json()
+                this.authors = authorsData.authors;
+            } catch (error) {
+                console.error(error);
+                alert('Error fetching authors');
+            }
         }
     }
 }
