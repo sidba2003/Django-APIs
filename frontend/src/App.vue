@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Authors from './components/Authors.vue'
+import Authors from './components/Authors/Authors.vue'
 
 export default {
     components: {
