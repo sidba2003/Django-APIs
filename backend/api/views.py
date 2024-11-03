@@ -12,8 +12,9 @@ def test_api_view(request):
     })
 
 
-def gauthor_api(request, author_id):
+def author_api(request, author_id):
     author = Author.objects.get(id=author_id)
+    print(f'author to be deleted is !!!! {author.as_dict()}')
     
     match request.method:
         case 'DELETE':
@@ -22,16 +23,17 @@ def gauthor_api(request, author_id):
                 'message': 'Author deleted'
             })
         case 'PUT':
-            # to do
-            pass
+            data = json.loads(request.body)
+
+            author.name = data['name']
+            author.age = data['age']
+            author.active = data['active']
+
+            return JsonResponse(author.as_dict())
 
 
-def author_api(request):
-    match request.method:
-        case 'GET':
-            return JsonResponse({
-                'authors': [author.as_dict() for author in Author.objects.all()]
-            })
+def authors_api(request):
+    match request.method: 
         case 'POST':
             data = json.loads(request.body)
             author = Author.objects.create(
@@ -40,4 +42,9 @@ def author_api(request):
                 active=data['active']
             )
             return JsonResponse(author.as_dict())
+        
+        case 'GET':
+            return JsonResponse({
+                        'authors': [author.as_dict() for author in Author.objects.all()]
+                    })
 
