@@ -3,9 +3,9 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Author</th>
                 <th scope="col">Name</th>
                 <th scope="col">Age</th>
+                <th scope="col">Active</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>

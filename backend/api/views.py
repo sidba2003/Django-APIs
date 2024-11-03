@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 import json
 
-from .models import Author
+from .models import Author, Book
 
 
 def test_api_view(request):
@@ -47,4 +47,27 @@ def authors_api(request):
             return JsonResponse({
                         'authors': [author.as_dict() for author in Author.objects.all()]
                     })
+
+def book_api(request, book_id):
+    book = Book.objects.get(id=book_id)
+    
+    match request.method:
+        case 'DELETE':
+            book.delete()
+            return JsonResponse({
+                'message': 'Book deleted'
+            })
+        case 'PUT':
+            data = json.loads(request.body)
+
+            book.title = data['title']
+            book.author = data['author']
+            book.pages = data['pages']
+            book.active = data['active']
+
+            return JsonResponse(book.as_dict())
+
+
+def books_api(request):
+    pass
 
