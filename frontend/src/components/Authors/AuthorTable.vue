@@ -99,6 +99,12 @@
         },
         methods: {
             async editAuthor() {
+                if (this.authorEditData.active == 'true') {
+                    this.authorEditData.active = true
+                } else {
+                    this.authorEditData.active = false
+                }
+
                 const response = await fetch(`${baseUrl}${this.selectedAuthor.api}`,{
                     method: 'PUT',
                     headers: {

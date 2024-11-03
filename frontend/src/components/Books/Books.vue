@@ -24,10 +24,15 @@
                             <textarea v-model="newBook.description" class="form-control" id="description"></textarea>
                         </div>
                         <div class="mb-3" v-if="authors.length > 0">
-                            <label for="authors" class="form-label">Authors</label>
-                            <select v-model="newBook.authors" multiple class="form-control" id="authors">
-                                <option v-for="author in authors" :value="author.id" :key="author.id">{{ author.name }}</option>
-                            </select>
+                            <label class="form-label">Authors</label>
+                            <div v-for="author in authors" :key="author.id" class="form-check">
+                                <input class="form-check-input" type="checkbox" :value="author.id" v-model="newBook.selectedAuthors">
+                                <label class="form-check-label">{{ author.name }}</label>
+                                <div class="form-check ms-3">
+                                    <input class="form-check-input" type="checkbox" :value="author.id" v-model="newBook.leadAuthors" :disabled="!newBook.selectedAuthors.includes(author.id)">
+                                    <label class="form-check-label">Lead Author</label>
+                                </div>
+                            </div>
                         </div>
                         <div v-else>
                             Loading authors...
@@ -74,7 +79,8 @@ export default {
             newBook: {
                 title: '',
                 description: '',
-                authors: [],
+                selectedAuthors: [],
+                leadAuthors: [],
                 published: ''
             }
         }
@@ -113,9 +119,25 @@ export default {
                 }
             }
         },
+        async updateAuthors() {
+            const authorsResponse = await fetch(`${baseUrl}/api/authors/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const authorsData = await authorsResponse.json()
+            this.authors = authorsData.authors;
+        },
+
         async createBook() {
             // Prepare authors data
-            const authorsIds = this.newBook.authors.map(Number);
+            const authorsData = this.newBook.selectedAuthors.map(authorId => {
+                return {
+                    id: authorId,
+                    is_lead_author: this.newBook.leadAuthors.includes(authorId)
+                };
+            });
 
             const response = await fetch(`${baseUrl}/api/books/`, {
                 method: 'POST',
@@ -125,37 +147,26 @@ export default {
                 body: JSON.stringify({
                     title: this.newBook.title,
                     description: this.newBook.description,
-                    authors: authorsIds,
+                    authors: authorsData,
                     published: this.newBook.published
                 })
-            })
-            const newBook = await response.json()
-            this.books.push(newBook)
+            });
+
+            if (!response.ok) {
+                alert('Failed to create book!');
+            } else {
+                const newBook = await response.json();
+                this.books.push(newBook);
+            }
 
             // Reset newBook
-            this.newBook.title = ''
-            this.newBook.description = ''
-            this.newBook.authors = []
-            this.newBook.published = ''
-        },
-        async updateAuthors(){
-            try {
-                // Fetch authors for selection in new book form
-                const authorsResponse = await fetch(`${baseUrl}/api/authors/`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                if (!authorsResponse.ok) {
-                    throw new Error('Failed to fetch authors');
-                }
-                const authorsData = await authorsResponse.json()
-                this.authors = authorsData.authors;
-            } catch (error) {
-                console.error(error);
-                alert('Error fetching authors');
-            }
+            this.newBook = {
+                title: '',
+                description: '',
+                selectedAuthors: [],
+                leadAuthors: [],
+                published: ''
+            };
         }
     }
 }
