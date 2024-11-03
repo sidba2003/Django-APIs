@@ -19,7 +19,6 @@ class Author(models.Model):
         }
 
 
-
 class Book(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -31,8 +30,10 @@ class Book(models.Model):
 
     def as_dict(self):
         return {
+            'id': self.id,
             'title': self.title,
-            'author': self.author.as_dict(),
+            'description': self.description,
+            'authors': [author.as_dict() for author in self.author.all()],
             'published': self.published,
             'api': reverse('book api', args=[self.id])
         }

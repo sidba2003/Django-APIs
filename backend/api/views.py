@@ -48,26 +48,45 @@ def authors_api(request):
                         'authors': [author.as_dict() for author in Author.objects.all()]
                     })
 
+
 def book_api(request, book_id):
     book = Book.objects.get(id=book_id)
-    
+
     match request.method:
         case 'DELETE':
             book.delete()
-            return JsonResponse({
-                'message': 'Book deleted'
-            })
+            return JsonResponse({'message': 'Book deleted'})
         case 'PUT':
             data = json.loads(request.body)
-
             book.title = data['title']
-            book.author = data['author']
-            book.pages = data['pages']
-            book.active = data['active']
+            book.description = data['description']
+            book.published = data['published']
+            book.save()
+
+            # Update authors
+            authors_ids = data.get('authors', [])
+            authors = Author.objects.filter(id__in=authors_ids)
+            book.author.set(authors)
 
             return JsonResponse(book.as_dict())
 
 
 def books_api(request):
-    pass
+    match request.method: 
+        case 'POST':
+            data = json.loads(request.body)
+            book = Book.objects.create(
+                title=data['title'],
+                description=data['description'],
+                published=data['published']
+            )
+            # Set authors
+            authors_ids = data.get('authors', [])
+            authors = Author.objects.filter(id__in=authors_ids)
+            book.author.set(authors)
+
+            return JsonResponse(book.as_dict())
+        case 'GET':
+            books = [book.as_dict() for book in Book.objects.all()]
+            return JsonResponse({'books': books})
 

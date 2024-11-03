@@ -14,17 +14,19 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="Authors-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><Authors/></div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">To show the Books</div>
+            <div class="tab-pane fade" id="Books-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><Books/></div>
         </div>
     </div>
 </template>
 
 <script>
 import Authors from './components/Authors/Authors.vue'
+import Books from './components/Books/Books.vue';
 
 export default {
     components: {
-        Authors
+        Authors,
+        Books
     }
 }
 </script>
