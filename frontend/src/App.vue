@@ -3,17 +3,26 @@
         <div class="h1 text-center border rounded bg-light p-2 mb-3">
             Django-APIs
         </div>
-        <div class="mb-3">
-            <u>Data</u>:             
-        </div>
-        <pre>{{ response_data }}</pre>
 
-        <!-- Button trigger modal -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#Authors-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Authors</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#Books-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Books</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="Authors-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><Authors/></div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">To show the Books</div>
+        </div>
+
+        <!-- Button trigger modal 
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
-        </button>
+        </button> -->
 
-        <!-- Modal -->
+        <!-- Modal
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -30,21 +39,22 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
 
     </div>
 </template>
 
 <script>
+import Authors from './components/Authors.vue'
+
 export default {
     data() {
         return {
             response_data: '',
         }
     },
-    async mounted() {
-        const response = await fetch('http://localhost:8000/api/test.json')
-        this.response_data = await response.json()
+    components: {
+        Authors
     }
 }
 </script>
