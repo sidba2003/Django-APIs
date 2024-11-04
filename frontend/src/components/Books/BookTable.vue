@@ -172,13 +172,6 @@ export default {
         },
         selectBook(book) {
             this.selectedBook = book;
-            this.bookEditData.title = book.title;
-            this.bookEditData.description = book.description;
-            this.bookEditData.selectedAuthors = book.authors.map(author => author.id);
-            this.bookEditData.leadAuthors = book.authors
-                .filter(author => author.is_lead_author)
-                .map(author => author.id);
-            this.bookEditData.published = book.published;
         }
     }
 }
