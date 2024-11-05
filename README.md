@@ -1,6 +1,4 @@
-# Template for ECS639U Individual Coursework
-
-## Create conda environment
+# Django Web App
 
 ### Install backend (Python) dependencies
 
