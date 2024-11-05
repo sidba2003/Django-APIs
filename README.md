@@ -28,14 +28,6 @@ $ python manage.py runserver
 
 The server will start on http://localhost:8000
 
-### API app
-
-An "api" Django app has already been created with the command
-
-```console
-$ python manage.py startapp api
-```
-
 ## Vue frontend
 
 ### Install frontend (JavaScript) dependencies
